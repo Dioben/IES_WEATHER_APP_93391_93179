@@ -1,0 +1,11 @@
+2020-10-16 15:40:34 INFO  Run with argument/city lisboa
+2020-10-16 15:40:34 INFO  Code for the city found
+2020-10-16 15:40:34 INFO  Successfully got the forecast of the city
+2020-10-16 15:40:42 INFO  Run with argument/city aveiro
+2020-10-16 15:40:42 INFO  Code for the city found
+2020-10-16 15:40:42 INFO  Successfully got the forecast of the city
+2020-10-16 15:40:50 INFO  Run with argument/city santarem
+2020-10-16 15:40:50 ERROR Invalid city (City code not found)
+2020-10-16 15:40:58 INFO  Run with argument/city porto
+2020-10-16 15:40:58 INFO  Code for the city found
+2020-10-16 15:40:58 INFO  Successfully got the forecast of the city

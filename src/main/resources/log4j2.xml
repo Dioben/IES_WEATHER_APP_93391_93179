@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <File name="file" fileName="weather_results.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+            </PatternLayout>
+        </File>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout	pattern="[%level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <appender-ref ref="console" />
+            <appender-ref ref="file" />
+        </Root>
+    </Loggers>
+</Configuration>
