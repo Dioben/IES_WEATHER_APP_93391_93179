@@ -11,7 +11,11 @@ import pt.ua.diogobento.guiao1.weather.impa_client.IpmaService;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ListIterator;
-import java.util.logging.Logger;
+//import java.util.logging.LogManager;
+//import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * demonstrates the use of the IPMA API for weather forecast
@@ -23,18 +27,23 @@ public class WeatherStarter {
     loggers provide a better alternative to System.out.println
     https://rules.sonarsource.com/java/tag/bad-practice/RSPEC-106
      */
-    private static final Logger logger = Logger.getLogger(WeatherStarter.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(WeatherStarter.class.getName());
 
     public static void  main(String[] args ) {
+        LOGGER.info("Run with argument/city "+args[0]);
         HashMap<String,Integer> cities = new HashMap<>();
         final String[] CITYNAMES = {"Aveiro","Beja","Braga","Bragança","Castelo Branco","Coimbra","Évora","Faro","Guarda","Leiria","Lisboa","Portalegre","Porto","Santarém","Setúbal","Viana do Castelo","Vila Real","Viseu","Funchal","Porto Santo","Vila do Porto","Ponta Delgada","Angra do Heroísmo","Santa Cruz da Graciosa","Velas","Madalena","Horta","Santa Cruz das Flores","Vila do Corvo"};
         final int[] CODES = {1010500,1020500,1030300,1040200,1050200,1060300,1070500,1080500,1090700,1100900,1110600,1121400,1131200,1141600,1151200,1160900,1171400,1182300,2310300,2320100,3410100,3420300,3430100,3440100,3450200,3460200,3470100,3480200,3490100};
         boolean ok = false;
         for(int i=0;i<CITYNAMES.length;i++){
             cities.put(CITYNAMES[i].toLowerCase(),CODES[i]);
-            if (CITYNAMES[i].toLowerCase().equals(args[0].toLowerCase())) ok = true; //we can satisfy request
+            if (CITYNAMES[i].toLowerCase().equals(args[0].toLowerCase())) {  //we can satisfy request
+                ok = true;
+                LOGGER.info("Code for the city found");
+            }
         }
         if (!ok){
+            LOGGER.error("Invalid city (City code not found)");
             System.err.println("LOCALIDADE INVÁLIDA,\nLOCALIDADES VÁLIDAS:\n");
             for (String x: CITYNAMES)
             System.err.println(x);
@@ -55,6 +64,7 @@ public class WeatherStarter {
             IpmaCityForecast forecast = apiResponse.body();
 
             if (forecast != null) {
+                LOGGER.info("Successfully got the forecast of the city");
                 System.out.print("Dados metereológicos fornecidos por "+forecast.getOwner()+" relativos a "+forecast.getCountry()+"\n\n");
                 ListIterator<CityForecast> x = forecast.getData().listIterator();
                 while (x.hasNext()) {
@@ -63,13 +73,13 @@ public class WeatherStarter {
                     System.out.println("\tTemperaturas de " + info.getTMin() + " a " + info.getTMax());
                     System.out.println("\tProbabilidade de precipitação: " + info.getPrecipitaProb());
                     System.out.println("\tVento de classe " + info.getClassWindSpeed() + " na direção " + info.getPredWindDir() + "\n");
-
                 }
             } else {
-                logger.info( "No results!");
+                LOGGER.error( "Unsuccessful in getting the forecast of the city");
             }
             System.exit(0);
         } catch (Exception ex) {
+            LOGGER.error("Problem found on requesting the forecast of the city");
             ex.printStackTrace();
         }
 
